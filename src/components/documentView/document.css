@@ -1,0 +1,56 @@
+code {
+  background-color: #ddd;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 0.9em;
+}
+
+pre code {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+blockquote {
+  background-color: #ddd;
+  border-left: 4px solid #4682b4;
+  margin: 1.5em 0;
+  padding: 0.5em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid gray;
+  padding: 10px;
+  text-align: left;
+}
+
+@media (prefers-color-scheme: dark) {
+  code {
+    background-color: #1d2026;
+  }
+  blockquote {
+    background-color: #1d2026;
+  }
+}

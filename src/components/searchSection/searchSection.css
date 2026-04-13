@@ -1,0 +1,21 @@
+.search-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+  gap: 5px;
+}
+
+.entry {
+  width: 100%;
+  text-align: left;
+  border: none;
+  border-radius: 3px;
+  background-color: transparent;
+  border-bottom: 0.5px solid gray;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
