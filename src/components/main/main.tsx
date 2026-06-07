@@ -8,7 +8,7 @@ import type { List, Tree, ListEntry } from "../../types";
 import debounce from "debounce";
 import Fuse, { type FuseResult } from "fuse.js";
 import type { Dispatch, StateUpdater } from "preact/hooks";
-import { MenuIcon } from "lucide-preact";
+import { ArrowLeftIcon, ArrowRightIcon, MenuIcon } from "lucide-preact";
 
 export function Header(props: {
   list: List;
@@ -47,6 +47,12 @@ export function Header(props: {
         onInput={(e) => debouncedSearch(e.currentTarget.value)}
         placeholder="Search..."
       />
+      <button onClick={() => window.history.back()}>
+        <ArrowLeftIcon />
+      </button>
+      <button onClick={() => window.history.forward()}>
+        <ArrowRightIcon />
+      </button>
     </div>
   );
 }
@@ -64,9 +70,13 @@ export function Main() {
   const [searchResult, setSearchResult] = useState<FuseResult<ListEntry>[]>([]);
 
   function openDoc(path: string) {
-    setOpenedDoc(path);
-    setOpenedSection("document");
+    location.hash = "#" + path;
   }
+
+  window.addEventListener("hashchange", () => {
+    setOpenedDoc(window.location.hash.replace("#", ""));
+    setOpenedSection("document");
+  })
 
   useEffect(() => {
     if (!setupDone) {
@@ -111,7 +121,7 @@ export function Main() {
       {openedDoc && (
         <DocumentSection
           openedDoc={openedDoc}
-          openDoc={setOpenedDoc}
+          openDoc={openDoc}
           openedSection={openedSection}
         />
       )}

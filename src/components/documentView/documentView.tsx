@@ -28,16 +28,15 @@ export function DocumentSection(props: {
       const url = new URL(link.href);
       if (url.origin === location.origin) {
         e.preventDefault();
-        props.openDoc(url.pathname);
-        if (url.hash) {
-          location.hash = url.hash;
-        }
+        props.openDoc(url.pathname + url.hash);
       }
     }
   }
 
   async function renderDocument() {
-    const savedDocument = await localforage.getItem<string>(props.openedDoc);
+    const url = new URL(props.openedDoc, location.origin);
+    const path = url.pathname;
+    const savedDocument = await localforage.getItem<string>(path);
     documentContainer.current!.innerHTML = savedDocument!;
     documentContainer
       .current!.querySelectorAll("pre code")
