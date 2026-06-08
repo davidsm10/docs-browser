@@ -28,11 +28,13 @@ h5,
 h6 {
   margin-top: 20px;
   margin-bottom: 10px;
+  overflow-wrap: anywhere;
 }
 
 p {
   margin-top: 5px;
   margin-bottom: 5px;
+  overflow-wrap: anywhere;
 }
 
 .table-wrapper {
