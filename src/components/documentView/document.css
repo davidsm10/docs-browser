@@ -4,6 +4,7 @@ code {
   border-radius: 4px;
   font-family: "Courier New", monospace;
   font-size: 0.9em;
+  word-break: break-all;
 }
 
 pre code {
