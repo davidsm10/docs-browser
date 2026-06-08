@@ -43,7 +43,7 @@ export function Header(props: {
       </button>
       <input
         type="search"
-        onClick={() => props.setOpenedSection("search")}
+        onFocus={() => props.setOpenedSection("search")}
         onInput={(e) => debouncedSearch(e.currentTarget.value)}
         placeholder="Search..."
       />
