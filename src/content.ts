@@ -13,8 +13,10 @@ export async function saveContent() {
   );
 
   const entries = await unpackTar(await decompressedResponse.arrayBuffer());
+  const headingToId = (heading: string) =>
+    heading.toLowerCase().replaceAll(" ", "_");
   const md = MarkdownIt({ html: true })
-    .use(markdownItAnchor)
+    .use(markdownItAnchor, { slugify: headingToId })
     .use(markdownItTable);
   const textDecoder = new TextDecoder();
   const entriesList: List = [];

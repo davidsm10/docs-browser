@@ -38,6 +38,21 @@ export function DocumentSection(props: {
     const path = url.pathname;
     const savedDocument = await localforage.getItem<string>(path);
     documentContainer.current!.innerHTML = savedDocument!;
+
+    const section = url.hash.replace("#", "");
+    if (section) {
+      const elem = document.getElementById(
+        section.toLowerCase().replaceAll(" ", "_"),
+      );
+      if (elem) {
+        elem.scrollIntoView();
+      } else {
+        documentContainer.current!.scrollTop = 0;
+      }
+    } else {
+      documentContainer.current!.scrollTop = 0;
+    }
+
     documentContainer
       .current!.querySelectorAll("pre code")
       .forEach((el: Element) => {
