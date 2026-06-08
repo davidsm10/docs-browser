@@ -80,7 +80,7 @@ export function DocumentSection(props: {
   });
   return (
     <section
-      style={{ display: props.openedSection !== "document" ? "none" : "flex" }}
+      style={{ display: props.openedSection !== "document" ? "none" : "block" }}
       className="document-view"
       ref={documentContainer}
       onClick={onClick}

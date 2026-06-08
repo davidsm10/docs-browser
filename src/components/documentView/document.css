@@ -34,6 +34,10 @@ p {
   margin-bottom: 5px;
 }
 
+.table-wrapper {
+  overflow-x: auto;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;

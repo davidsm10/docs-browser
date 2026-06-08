@@ -26,7 +26,17 @@ export async function saveContent() {
       const titleStart = markdown.indexOf("# ");
       const titleEnd = markdown.indexOf("\n", titleStart);
       const title = markdown.substring(titleStart + 2, titleEnd);
-      const html = md.render(markdown);
+      let html = md.render(markdown);
+      const dom = new DOMParser().parseFromString(html, "text/html");
+      const tables = dom.querySelectorAll("table");
+      for (const table of tables) {
+        const clone = table.cloneNode(true);
+        const wrapper = dom.createElement("div");
+        wrapper.className = "table-wrapper";
+        wrapper.appendChild(clone);
+        table.replaceWith(wrapper);
+      }
+      html = dom.body.innerHTML;
       const path = "/" + entry.header.name;
       entriesList.push({ path, title });
       await localforage.setItem(path, html);
