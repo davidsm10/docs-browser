@@ -35,6 +35,8 @@ export function DocumentSection(props: {
         }
 
         props.openDoc(url.pathname + url.hash);
+      } else {
+        link.target = "_blank";
       }
     }
   }
