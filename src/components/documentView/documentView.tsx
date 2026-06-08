@@ -25,9 +25,15 @@ export function DocumentSection(props: {
   function onClick(e: MouseEvent) {
     const link = (e.target as HTMLElement).closest("a");
     if (link && link.href) {
-      const url = new URL(link.href);
+      let url = new URL(link.href);
       if (url.origin === location.origin) {
         e.preventDefault();
+        if (url.pathname === "/" || url.pathname === "/index.html") {
+          const hash = url.hash;
+          url = new URL(props.openedDoc, location.origin);
+          url.hash = hash;
+        }
+
         props.openDoc(url.pathname + url.hash);
       }
     }
