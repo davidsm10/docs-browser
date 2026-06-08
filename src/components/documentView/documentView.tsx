@@ -43,7 +43,14 @@ export function DocumentSection(props: {
     const url = new URL(props.openedDoc, location.origin);
     const path = url.pathname;
     const savedDocument = await localforage.getItem<string>(path);
-    documentContainer.current!.innerHTML = savedDocument!;
+    if (!savedDocument) {
+      documentContainer.current!.innerHTML =
+        "<h1>Page not found</h1>" +
+        `<p>Page <code>${url.pathname}</code> could not be found locally.</p>`;
+      return;
+    }
+
+    documentContainer.current!.innerHTML = savedDocument;
 
     const section = url.hash.replace("#", "");
     if (section) {
