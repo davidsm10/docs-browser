@@ -46,14 +46,6 @@ export async function saveContent() {
       if (!title) {
         title = getTitleFromPath(entry.header.name);
       }
-      const tables = dom.querySelectorAll("table");
-      for (const table of tables) {
-        const clone = table.cloneNode(true);
-        const wrapper = dom.createElement("div");
-        wrapper.className = "table-wrapper";
-        wrapper.appendChild(clone);
-        table.replaceWith(wrapper);
-      }
       html = dom.body.innerHTML;
       const path = "/" + archiveName + "/" + entry.header.name;
       entriesList.push({ path, title });

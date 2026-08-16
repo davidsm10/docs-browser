@@ -73,6 +73,14 @@ export function DocumentSection(props: {
       .forEach((el: Element) => {
         hljs.highlightElement(el as HTMLElement);
       });
+
+    documentContainer.current!.querySelectorAll("table").forEach((table) => {
+      const clone = table.cloneNode(true);
+      const wrapper = document.createElement("div");
+      wrapper.className = "table-wrapper";
+      wrapper.appendChild(clone);
+      table.replaceWith(wrapper);
+    });
   }
 
   useEffect(() => {
