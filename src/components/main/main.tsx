@@ -9,6 +9,7 @@ import Fuse, { type FuseResult } from "fuse.js";
 import type { Dispatch, StateUpdater } from "preact/hooks";
 import { ArrowLeftIcon, ArrowRightIcon, MenuIcon } from "lucide-preact";
 import { useDebouncedCallback } from "use-debounce";
+import SetupView from "../setupView/setupView";
 
 export function Header(props: {
   list: List;
@@ -73,15 +74,10 @@ export function Main() {
     location.hash = "#" + path;
   }
 
-  useEffect(() => {
-    if (setupDone) return;
-    const setup = async () => {
-      await saveContent();
-      localStorage.setItem("setup-done", "true");
-      setSetupDone(true);
-    };
-    setup();
-  }, []);
+  function onSetupDone() {
+    localStorage.setItem("setup-done", "true");
+    setSetupDone(true);
+  }
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -105,7 +101,7 @@ export function Main() {
   }, []);
 
   if (!setupDone) {
-    return <div>Decompressing, converting and saving docs</div>;
+    return <SetupView onSetupDone={onSetupDone} />;
   }
 
   return (
