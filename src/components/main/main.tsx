@@ -73,11 +73,6 @@ export function Main() {
     location.hash = "#" + path;
   }
 
-  window.addEventListener("hashchange", () => {
-    setOpenedDoc(window.location.hash.replace("#", ""));
-    setOpenedSection("document");
-  })
-
   useEffect(() => {
     if (!setupDone) {
       saveContent().then(() => {
@@ -93,6 +88,13 @@ export function Main() {
     if (!tree) {
       localforage.getItem<Tree>("tree").then((value) => setTree(value));
     }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("hashchange", () => {
+      setOpenedDoc(window.location.hash.replace("#", ""));
+      setOpenedSection("document");
+    });
   }, []);
 
   if (!setupDone) {
