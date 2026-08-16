@@ -11,6 +11,12 @@ type DocsIndex = string[];
 export async function saveContent() {
   const docsIndex: DocsIndex = await (await fetch("/docs.json")).json();
   const entriesList: List = [];
+  const headingToId = (heading: string) =>
+    heading.toLowerCase().replaceAll(" ", "_");
+  const md = MarkdownIt({ html: true })
+    .use(markdownItAnchor, { slugify: headingToId })
+    .use(markdownItTable);
+  const textDecoder = new TextDecoder();
   for (const file of docsIndex) {
     const archiveName = file.split(".")[0];
     const compressedResponse = await fetch(file);
@@ -19,12 +25,6 @@ export async function saveContent() {
     );
 
     const entries = await unpackTar(await decompressedResponse.arrayBuffer());
-    const headingToId = (heading: string) =>
-      heading.toLowerCase().replaceAll(" ", "_");
-    const md = MarkdownIt({ html: true })
-      .use(markdownItAnchor, { slugify: headingToId })
-      .use(markdownItTable);
-    const textDecoder = new TextDecoder();
     for (const entry of entries) {
       if (entry.header.type !== "file" || !entry.data) {
         continue;
