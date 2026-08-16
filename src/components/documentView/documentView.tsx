@@ -24,24 +24,20 @@ export function DocumentSection(props: {
 
   function onClick(e: MouseEvent) {
     const link = (e.target as HTMLElement).closest("a");
-    if (link && link.href) {
-      let url = new URL(link.href);
-      if (url.origin === location.origin) {
-        e.preventDefault();
-        const archiveName = props.openedDoc.replace("/", "").split("/")[0];
-        if (url.pathname === "/" || url.pathname === "/index.html") {
-          const hash = url.hash;
-          url = new URL(
-            props.openedDoc.replace("/" + archiveName, ""),
-            location.origin,
-          );
-          url.hash = hash;
-        }
-
-        props.openDoc("/" + archiveName + url.pathname + url.hash);
-      } else {
-        link.target = "_blank";
-      }
+    if (!link) return;
+    const href = link.getAttribute("href");
+    if (!href) return;
+    const currentArchiveName = props.openedDoc.replace("/", "").split("/")[0];
+    const currentFilePath = props.openedDoc.replace(
+      "/" + currentArchiveName,
+      "",
+    );
+    let url = new URL(href, new URL(currentFilePath, location.origin));
+    if (url.origin === location.origin) {
+      e.preventDefault();
+      props.openDoc("/" + currentArchiveName + url.pathname + url.hash);
+    } else {
+      link.target = "_blank";
     }
   }
 
