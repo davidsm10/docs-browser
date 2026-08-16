@@ -2,9 +2,7 @@ code {
   background-color: #ddd;
   padding: 2px 4px;
   border-radius: 4px;
-  font-family: "Fira Code", monospace;
-  font-variant-ligatures: none;
-  font-feature-settings: "calt" 0, "liga" 0, "clig" 0;
+  font-family: "Courier New", monospace;
   font-size: 0.9em;
   word-break: break-all;
 }

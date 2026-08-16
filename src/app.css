@@ -19,8 +19,3 @@ body {
     color: #e0e0e0;
   }
 }
-
-@font-face {
-  font-family: "Fira Code";
-  src: url("/FiraCode-Regular.woff2"), format("woff2");
-}
