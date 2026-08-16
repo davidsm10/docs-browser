@@ -5,10 +5,10 @@ import { useEffect, useState } from "preact/hooks";
 import localforage from "localforage";
 import { saveContent } from "../../content";
 import type { List, Tree, ListEntry } from "../../types";
-import debounce from "debounce";
 import Fuse, { type FuseResult } from "fuse.js";
 import type { Dispatch, StateUpdater } from "preact/hooks";
 import { ArrowLeftIcon, ArrowRightIcon, MenuIcon } from "lucide-preact";
+import { useDebouncedCallback } from "use-debounce";
 
 export function Header(props: {
   list: List;
@@ -19,7 +19,7 @@ export function Header(props: {
   const fuse = new Fuse(props.list, {
     keys: ["title"],
   });
-  const debouncedSearch = debounce(search, 500);
+  const debouncedSearch = useDebouncedCallback(search, 500);
   function search(query: string) {
     if (query.trim()) {
       props.setSearchResult(fuse.search(query, { limit: 50 }));

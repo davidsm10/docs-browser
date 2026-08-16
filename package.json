@@ -9,7 +9,6 @@
     "check": "tsc -b && prettier --check ."
   },
   "dependencies": {
-    "debounce": "^3.0.0",
     "fuse.js": "^7.3.0",
     "highlight.js": "^11.11.1",
     "localforage": "^1.10.0",
@@ -20,6 +19,7 @@
     "modern-tar": "^0.7.6",
     "preact": "^10.29.1",
     "typescript": "~6.0.2",
+    "use-debounce": "^10.1.1",
     "xz-decompress": "^0.2.3"
   },
   "devDependencies": {
