@@ -93,7 +93,7 @@ export function Main() {
     if (!tree) {
       localforage.getItem<Tree>("tree").then((value) => setTree(value));
     }
-  });
+  }, []);
 
   if (!setupDone) {
     return <div>Decompressing, converting and saving docs</div>;
