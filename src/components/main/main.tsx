@@ -74,12 +74,13 @@ export function Main() {
   }
 
   useEffect(() => {
-    if (!setupDone) {
-      saveContent().then(() => {
-        localStorage.setItem("setup-done", "true");
-        setSetupDone(true);
-      });
-    }
+    if (setupDone) return;
+    const setup = async () => {
+      await saveContent();
+      localStorage.setItem("setup-done", "true");
+      setSetupDone(true);
+    };
+    setup();
   }, []);
 
   useEffect(() => {
