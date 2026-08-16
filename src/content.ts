@@ -7,8 +7,14 @@ import type { List, Tree } from "./types";
 import localforage from "localforage";
 
 type DocsIndex = string[];
+export interface ProgressData {
+  progress: number;
+  file: string;
+}
 
-export async function saveContent() {
+export async function saveContent(
+  onProgress: (progressData: ProgressData) => void,
+) {
   const docsIndex: DocsIndex = await (await fetch("/docs.json")).json();
   const entriesList: List = [];
   const headingToId = (heading: string) =>
@@ -18,6 +24,7 @@ export async function saveContent() {
     .use(markdownItTable);
   const textDecoder = new TextDecoder();
   for (const file of docsIndex) {
+    onProgress({ file: file, progress: 0 });
     const archiveName = file.split(".")[0];
     const compressedResponse = await fetch(file);
     const decompressedResponse = new Response(
@@ -25,6 +32,8 @@ export async function saveContent() {
     );
 
     const entries = await unpackTar(await decompressedResponse.arrayBuffer());
+    const totalFiles = entries.length;
+    let processedFiles = 0;
     for (const entry of entries) {
       if (entry.header.type !== "file" || !entry.data) {
         continue;
@@ -50,6 +59,11 @@ export async function saveContent() {
       const path = "/" + archiveName + "/" + entry.header.name;
       entriesList.push({ path, title });
       await localforage.setItem(path, html);
+      processedFiles += 1;
+      onProgress({
+        file: file,
+        progress: (processedFiles / totalFiles) * 100,
+      });
     }
   }
 
