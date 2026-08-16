@@ -80,15 +80,21 @@ export function Main() {
         setSetupDone(true);
       });
     }
-
-    if (!list) {
-      localforage.getItem<List>("list").then((value) => setList(value));
-    }
-
-    if (!tree) {
-      localforage.getItem<Tree>("tree").then((value) => setTree(value));
-    }
   }, []);
+
+  useEffect(() => {
+    const loadInitialData = async () => {
+      if (!list) {
+        setList(await localforage.getItem<List>("list"));
+      }
+
+      if (!tree) {
+        setTree(await localforage.getItem<Tree>("tree"));
+      }
+    };
+
+    loadInitialData();
+  }, [setupDone]);
 
   useEffect(() => {
     window.addEventListener("hashchange", () => {
