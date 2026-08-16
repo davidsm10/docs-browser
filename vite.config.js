@@ -8,7 +8,10 @@ export default defineConfig({
   plugins: [
     preact(),
     viteStaticCopy({
-      targets: [{ src: "*.tar.xz", dest: "./" }],
+      targets: [
+        { src: "*.tar.xz", dest: "./" },
+        { src: "docs.json", dest: "./" },
+      ],
     }),
     zipPack({ outDir: "./dist", outFileName: "app.xdc" }),
   ],

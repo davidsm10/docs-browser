@@ -6,53 +6,59 @@ import { markdownItTable } from "markdown-it-table";
 import type { List, Tree } from "./types";
 import localforage from "localforage";
 
+type DocsIndex = string[];
+
 export async function saveContent() {
-  const compressedResponse = await fetch("/docs.tar.xz");
-  const decompressedResponse = new Response(
-    new XzReadableStream(compressedResponse.body!),
-  );
-
-  const entries = await unpackTar(await decompressedResponse.arrayBuffer());
-  const headingToId = (heading: string) =>
-    heading.toLowerCase().replaceAll(" ", "_");
-  const md = MarkdownIt({ html: true })
-    .use(markdownItAnchor, { slugify: headingToId })
-    .use(markdownItTable);
-  const textDecoder = new TextDecoder();
+  const docsIndex: DocsIndex = await (await fetch("/docs.json")).json();
   const entriesList: List = [];
-  for (const entry of entries) {
-    if (entry.header.type !== "file" || !entry.data) {
-      continue;
-    }
+  for (const file of docsIndex) {
+    const archiveName = file.split(".")[0];
+    const compressedResponse = await fetch(file);
+    const decompressedResponse = new Response(
+      new XzReadableStream(compressedResponse.body!),
+    );
 
-    const text = textDecoder.decode(entry.data);
+    const entries = await unpackTar(await decompressedResponse.arrayBuffer());
+    const headingToId = (heading: string) =>
+      heading.toLowerCase().replaceAll(" ", "_");
+    const md = MarkdownIt({ html: true })
+      .use(markdownItAnchor, { slugify: headingToId })
+      .use(markdownItTable);
+    const textDecoder = new TextDecoder();
+    for (const entry of entries) {
+      if (entry.header.type !== "file" || !entry.data) {
+        continue;
+      }
 
-    let html: string;
-    if (entry.header.name.endsWith(".html")) {
-      html = text;
-    } else if (entry.header.name.endsWith(".md")) {
-      html = md.render(text);
-    } else {
-      html = md.render(text);
-    }
+      const text = textDecoder.decode(entry.data);
 
-    const dom = new DOMParser().parseFromString(html, "text/html");
-    let title = getTitleFromDom(dom);
-    if (!title) {
-      title = getTitleFromPath(entry.header.name);
+      let html: string;
+      if (entry.header.name.endsWith(".html")) {
+        html = text;
+      } else if (entry.header.name.endsWith(".md")) {
+        html = md.render(text);
+      } else {
+        html = md.render(text);
+      }
+
+      const dom = new DOMParser().parseFromString(html, "text/html");
+      let title = getTitleFromDom(dom);
+      if (!title) {
+        title = getTitleFromPath(entry.header.name);
+      }
+      const tables = dom.querySelectorAll("table");
+      for (const table of tables) {
+        const clone = table.cloneNode(true);
+        const wrapper = dom.createElement("div");
+        wrapper.className = "table-wrapper";
+        wrapper.appendChild(clone);
+        table.replaceWith(wrapper);
+      }
+      html = dom.body.innerHTML;
+      const path = "/" + archiveName + "/" + entry.header.name;
+      entriesList.push({ path, title });
+      await localforage.setItem(path, html);
     }
-    const tables = dom.querySelectorAll("table");
-    for (const table of tables) {
-      const clone = table.cloneNode(true);
-      const wrapper = dom.createElement("div");
-      wrapper.className = "table-wrapper";
-      wrapper.appendChild(clone);
-      table.replaceWith(wrapper);
-    }
-    html = dom.body.innerHTML;
-    const path = "/" + entry.header.name;
-    entriesList.push({ path, title });
-    await localforage.setItem(path, html);
   }
 
   const tree = listToTree(entriesList);

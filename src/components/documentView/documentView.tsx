@@ -28,13 +28,17 @@ export function DocumentSection(props: {
       let url = new URL(link.href);
       if (url.origin === location.origin) {
         e.preventDefault();
+        const archiveName = props.openedDoc.replace("/", "").split("/")[0];
         if (url.pathname === "/" || url.pathname === "/index.html") {
           const hash = url.hash;
-          url = new URL(props.openedDoc, location.origin);
+          url = new URL(
+            props.openedDoc.replace("/" + archiveName, ""),
+            location.origin,
+          );
           url.hash = hash;
         }
 
-        props.openDoc(url.pathname + url.hash);
+        props.openDoc("/" + archiveName + url.pathname + url.hash);
       } else {
         link.target = "_blank";
       }
