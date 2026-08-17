@@ -56,9 +56,7 @@ export function DocumentSection(props: {
 
     const section = url.hash.replace("#", "");
     if (section) {
-      const elem = document.getElementById(
-        section.toLowerCase().replaceAll(" ", "_"),
-      );
+      const elem = document.getElementById(section);
       if (elem) {
         elem.scrollIntoView();
       } else {
