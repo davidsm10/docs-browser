@@ -83,7 +83,8 @@ export function DocumentSection(props: {
 
   useEffect(() => {
     renderDocument();
-  });
+  }, [props.openedDoc]);
+
   return (
     <section
       style={{ display: props.openedSection !== "document" ? "none" : "block" }}
