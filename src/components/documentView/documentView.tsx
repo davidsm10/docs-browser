@@ -73,11 +73,10 @@ export function DocumentSection(props: {
       });
 
     documentContainer.current!.querySelectorAll("table").forEach((table) => {
-      const clone = table.cloneNode(true);
       const wrapper = document.createElement("div");
       wrapper.className = "table-wrapper";
-      wrapper.appendChild(clone);
-      table.replaceWith(wrapper);
+      table.parentNode!.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
     });
   }
 
