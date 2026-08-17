@@ -3,7 +3,6 @@ import { SearchSection } from "../searchSection/searchSection";
 import { DocumentSection } from "../documentView/documentView";
 import { useEffect, useState } from "preact/hooks";
 import localforage from "localforage";
-import { saveContent } from "../../content";
 import type { List, Tree, ListEntry } from "../../types";
 import Fuse, { type FuseResult } from "fuse.js";
 import type { Dispatch, StateUpdater } from "preact/hooks";

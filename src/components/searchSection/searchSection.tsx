@@ -48,7 +48,7 @@ function TreeEntryElement(props: {
             <ChevronRightIcon />
           )
         ) : (
-          <FileIcon size={20}/>
+          <FileIcon size={20} />
         )}
         {props.tree.title}
       </button>
