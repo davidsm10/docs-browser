@@ -1,7 +1,7 @@
 import "./main.css";
 import { SearchSection } from "../searchSection/searchSection";
 import { DocumentSection } from "../documentView/documentView";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import localforage from "localforage";
 import type { List, Tree, ListEntry } from "../../types";
 import Fuse, { type FuseResult } from "fuse.js";
@@ -16,13 +16,11 @@ export function Header(props: {
   openedSection: "document" | "search";
   setOpenedSection: Dispatch<StateUpdater<"document" | "search">>;
 }) {
-  const fuse = new Fuse(props.list, {
-    keys: ["title"],
-  });
+  const fuse = useRef<Fuse<ListEntry>>(null);
   const debouncedSearch = useDebouncedCallback(search, 500);
   function search(query: string) {
     if (query.trim()) {
-      props.setSearchResult(fuse.search(query, { limit: 50 }));
+      props.setSearchResult(fuse.current!.search(query, { limit: 50 }));
     } else {
       props.setSearchResult([]);
     }
@@ -35,6 +33,12 @@ export function Header(props: {
       props.setOpenedSection("document");
     }
   }
+
+  useEffect(() => {
+    fuse.current = new Fuse(props.list, {
+      keys: ["title"],
+    });
+  }, []);
 
   return (
     <div className="header">
