@@ -27,15 +27,18 @@ export function DocumentSection(props: {
     if (!link) return;
     const href = link.getAttribute("href");
     if (!href) return;
-    const currentArchiveName = props.openedDoc!.replace("/", "").split("/")[0];
-    const currentFilePath = props.openedDoc!.replace(
-      "/" + currentArchiveName,
-      "",
+    const currentArchivePath = props.openedDoc!.substring(
+      0,
+      props.openedDoc?.indexOf("/", 2),
     );
+    const currentFilePath = props.openedDoc!.substring(
+      currentArchivePath.length,
+    );
+
     let url = new URL(href, new URL(currentFilePath, location.origin));
     if (url.origin === location.origin) {
       e.preventDefault();
-      props.openDoc("/" + currentArchiveName + url.pathname + url.hash);
+      props.openDoc(currentArchivePath + url.pathname + url.hash);
     } else {
       link.target = "_blank";
     }
