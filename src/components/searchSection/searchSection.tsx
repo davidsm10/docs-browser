@@ -71,7 +71,7 @@ function SearchEntry(props: {
 }
 
 export function SearchSection(props: {
-  openedSection: "document" | "search";
+  hidden: boolean;
   searchResult: FuseResult<ListEntry>[];
   tree: Tree;
   openDoc: (path: string) => void;
@@ -79,7 +79,7 @@ export function SearchSection(props: {
   return (
     <section
       class="search-section"
-      style={{ display: props.openedSection !== "search" ? "none" : "flex" }}
+      style={{ display: props.hidden ? "none" : "flex" }}
     >
       <div hidden={props.searchResult.length !== 0}>
         {props.tree.map((entry) => (

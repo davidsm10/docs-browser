@@ -17,7 +17,7 @@ hljs.registerLanguage("json", json);
 
 export function DocumentSection(props: {
   openedDoc: string | null;
-  openedSection: "document" | "search";
+  hidden: boolean;
   openDoc: (path: string) => void;
 }) {
   const documentContainer = createRef<HTMLDivElement>();
@@ -92,7 +92,7 @@ export function DocumentSection(props: {
 
   return (
     <section
-      style={{ display: props.openedSection !== "document" ? "none" : "block" }}
+      style={{ display: props.hidden ? "none" : "block" }}
       className="document-view"
       ref={documentContainer}
       onClick={onClick}

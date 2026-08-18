@@ -123,13 +123,13 @@ export function Main() {
           searchResult={searchResult}
           tree={tree}
           openDoc={openDoc}
-          openedSection={openedSection}
+          hidden={openedSection !== "search"}
         />
       )}
       <DocumentSection
         openedDoc={openedDoc}
         openDoc={openDoc}
-        openedSection={openedSection}
+        hidden={openedSection !== "document"}
       />
     </div>
   );
