@@ -52,8 +52,10 @@ export function DocumentSection(props: {
       return;
     }
     const url = new URL(props.openedDoc, location.origin);
-    const path = url.pathname;
-    const savedDocument = await localforage.getItem<string>(path);
+    if (url.pathname.endsWith("/")) {
+      url.pathname += "index.html";
+    }
+    const savedDocument = await localforage.getItem<string>(url.pathname);
     if (!savedDocument) {
       documentContainer.current!.innerHTML =
         "<h1>Page not found</h1>" +
