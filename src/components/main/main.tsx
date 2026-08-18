@@ -126,13 +126,11 @@ export function Main() {
           openedSection={openedSection}
         />
       )}
-      {openedDoc && (
-        <DocumentSection
-          openedDoc={openedDoc}
-          openDoc={openDoc}
-          openedSection={openedSection}
-        />
-      )}
+      <DocumentSection
+        openedDoc={openedDoc}
+        openDoc={openDoc}
+        openedSection={openedSection}
+      />
     </div>
   );
 }
