@@ -65,8 +65,6 @@ export function DocumentSection(props: {
       const elem = document.getElementById(section);
       if (elem) {
         elem.scrollIntoView();
-      } else {
-        documentContainer.current!.scrollTop = 0;
       }
     } else {
       documentContainer.current!.scrollTop = 0;
