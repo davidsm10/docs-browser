@@ -62,7 +62,7 @@ export function Header(props: {
 }
 
 export function Main() {
-  const [setupDone, setSetupDone] = useState(
+  const [setupDone, setSetupDone] = useState(() =>
     Boolean(localStorage.getItem("setup-done")),
   );
   const [list, setList] = useState<null | List>(null);
