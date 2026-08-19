@@ -47,7 +47,7 @@ export async function saveContent(
       } else if (entry.header.name.endsWith(".md")) {
         html = md.render(text);
       } else {
-        html = md.render(text);
+        html = text.replaceAll("\n", "</br>");
       }
 
       const dom = new DOMParser().parseFromString(html, "text/html");
